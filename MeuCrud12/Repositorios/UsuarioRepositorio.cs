@@ -1,4 +1,6 @@
 ﻿using MeuCrud12.Models;
+
+using MeuCrud12.Repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,18 +9,19 @@ using System.Threading.Tasks;
 
 namespace MeuCrud12.Repositorios
 {
-    public class UsuarioRepositorio : Interfaces.
-        IUsuarioRepositorio
+    public class UsuarioRepositorio : IUsuarioRepositorio
     {
         private readonly Data.SistemaTarefasDBContex _dbContext;
         public UsuarioRepositorio(Data.SistemaTarefasDBContex sistemaTarefasDBContex)
         {
             _dbContext = sistemaTarefasDBContex;
         }
-        public async Task<UsuarioModel> BuscarPorId(int id)
+
+        public async Task<List<UsuarioModel>> BuscarPorId(int id)
         {
-            return await _dbContext.Usuarios.FirstOrDefaultAsync();
-            //return await _dbContext.Usuarios.FirstOrDefaultAsync(x => x.Id == id); ---> Essa merda não Funfa
+           
+            return await _dbContext.Usuarios.Where(x => x.Id == id.ToString()).ToListAsync();
+
         }
 
         public async Task<List<UsuarioModel>> BuscarTodosUsuarios()
@@ -40,6 +43,6 @@ namespace MeuCrud12.Repositorios
             throw new NotImplementedException();
         }
 
-        
+
     }
 }
